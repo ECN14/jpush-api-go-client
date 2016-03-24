@@ -1,5 +1,9 @@
 package jpushclient
 
+import (
+	"fmt"
+)
+
 type Notice struct {
 	Alert    string          `json:"alert,omitempty"`
 	Android  *AndroidNotice  `json:"android,omitempty"`
@@ -17,7 +21,7 @@ type AndroidNotice struct {
 type IOSNotice struct {
 	Alert            string                 `json:"alert"`
 	Sound            string                 `json:"sound,omitempty"`
-	Badge            int                    `json:"badge,omitempty"`
+	Badge            interface{}            `json:"badge,omitempty"`
 	ContentAvailable bool                   `json:"Content-available,omitempty"`
 	Category         string                 `json:"category,omitempty"`
 	Extras           map[string]interface{} `json:"extras,omitempty"`
@@ -44,4 +48,44 @@ func (this *Notice) SetIOSNotice(n *IOSNotice) {
 
 func (this *Notice) SetWinPhoneNotice(n *WinPhoneNotice) {
 	this.WINPhone = n
+}
+
+func (this *Notice) SetIOSSound(sound string) error {
+	if this.IOS == nil {
+		return fmt.Errorf("IOS is nil pointer")
+	}
+	this.IOS.Sound = sound
+	return nil
+}
+
+func (this *Notice) SetIOSBadge(Badge interface{}) error {
+	if this.IOS == nil {
+		return fmt.Errorf("IOS is nil pointer")
+	}
+	this.IOS.Badge = Badge
+	return nil
+}
+
+func (this *Notice) SetIOSExtras(Extras map[string]interface{}) error {
+	if this.IOS == nil {
+		return fmt.Errorf("IOS is nil pointer")
+	}
+	this.IOS.Extras = Extras
+	return nil
+}
+
+func (this *Notice) SetAndroidExtras(Extras map[string]interface{}) error {
+	if this.Android == nil {
+		return fmt.Errorf("Android is nil pointer")
+	}
+	this.Android.Extras = Extras
+	return nil
+}
+
+func (this *Notice) SetWINPhoneExtras(Extras map[string]interface{}) error {
+	if this.WINPhone == nil {
+		return fmt.Errorf("WINPhone is nil pointer")
+	}
+	this.WINPhone.Extras = Extras
+	return nil
 }
